@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Reset Password</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 400px;
+      margin: 60px auto;
+      padding: 0 16px;
+    }
+    h2 { text-align: center; }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 12px 0;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    p {
+      color: red;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Reset Password</h2>
+
+  <input id="password" type="password" placeholder="New password" />
+  <input id="confirmPassword" type="password" placeholder="Confirm password" />
+
+  <button id="resetBtn">Reset Password</button>
+
+  <p id="message"></p>
+
+  <!-- Supabase SDK（只加载，不声明变量） -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+  <script>
+    (function () {
+      // ✅ 永远不要写：const supabase = ...
+      if (!window.supabase) {
+        alert("Supabase SDK failed to load.");
+        return;
+      }
+
+      const SUPABASE_URL = "https://ztvcgbjwgxlhhnazbvyy.supabase.co";
+      const SUPABASE_ANON_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp0dmNnYmp3Z3hsaGhuYXpidnl5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI3Nzg4MDcsImV4cCI6MjA3ODM1NDgwN30.Crrau4eNFHodcnK-sYUFL3iPEBu8SUpZy6jtxl43GCg";
+
+      // ✅ 用完全不同的名字
+      const sbClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+      );
+
+      document.getElementById("resetBtn").addEventListener("click", async () => {
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+        const message = document.getElementById("message");
+
+        message.innerText = "";
+
+        if (!password || !confirmPassword) {
+          alert("Please fill in both fields.");
+          return;
+        }
+
+        if (password.length < 8) {
+          alert("Password must be at least 8 characters.");
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          alert("Passwords do not match.");
+          return;
+        }
+
+        const { error } = await sbClient.auth.updateUser({
+          password: password
+        });
+
+        if (error) {
+          alert(error.message);
+          message.innerText = error.message;
+        } else {
+          alert("Password reset successful. Please log in again.");
+          await sbClient.auth.signOut();
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>
