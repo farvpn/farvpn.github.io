@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FarVPN Support</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px 28px 32px;
+            border: 1px solid rgba(255, 192, 213, 0.15);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .logo-icon {
+            width: 72px;
+            height: 72px;
+            margin-bottom: 12px;
+        }
+
+        .logo-icon img {
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
+            display: block;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #ffc0d5;
+        }
+
+        .logo p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 32px;
+            padding: 0 4px;
+        }
+
+        .contact-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: background 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: #fff;
+            border: 1px solid rgba(255, 192, 213, 0.08);
+        }
+
+        .contact-card:active {
+            background: rgba(255, 192, 213, 0.12);
+        }
+
+        .contact-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .contact-icon.email {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            box-shadow: 0 4px 16px rgba(245, 87, 108, 0.3);
+        }
+
+        .contact-icon.telegram {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            box-shadow: 0 4px 16px rgba(79, 172, 254, 0.3);
+        }
+
+        .contact-icon.website {
+            background: linear-gradient(135deg, #ffc0d5, #ff6b9d);
+            box-shadow: 0 4px 16px rgba(255, 192, 213, 0.3);
+        }
+
+        .contact-icon.channel {
+            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+            box-shadow: 0 4px 16px rgba(161, 140, 209, 0.3);
+        }
+
+        .contact-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .contact-info .label {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 2px;
+        }
+
+        .contact-info .value {
+            font-size: 16px;
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        .contact-info .hint {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 2px;
+        }
+
+        .arrow {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .copy-toast {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .copy-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255, 192, 213, 0.15), transparent);
+            margin: 24px 0;
+        }
+
+        .footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 12px;
+            }
+
+            .container {
+                padding: 32px 20px 24px;
+            }
+
+            .logo-icon {
+                width: 64px;
+                height: 64px;
+            }
+
+            .logo-icon img {
+                width: 64px;
+                height: 64px;
+            }
+
+            .logo h1 {
+                font-size: 22px;
+            }
+
+            .contact-card {
+                padding: 16px;
+            }
+
+            .contact-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
+            }
+
+            .contact-info .value {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Logo -->
+        <div class="logo">
+            <div class="logo-icon"><img src="../images/logo.png" alt="FarVPN"></div>
+            <h1>FarVPN</h1>
+            <p>Secure · Fast · Reliable</p>
+        </div>
+
+        <!-- Subtitle -->
+        <div class="subtitle">
+            Have questions or suggestions? Reach out to us through any of the channels below and we'll get back to you
+            as soon as possible.
+        </div>
+
+        <!-- Telegram Contact -->
+        <a class="contact-card" href="https://t.me/qifendev" target="_blank" rel="noopener noreferrer"
+            id="telegramCard">
+            <div class="contact-icon telegram">✈</div>
+            <div class="contact-info">
+                <div class="label">Telegram (Contact)</div>
+                <div class="value">@qifendev</div>
+                <div class="hint">Click to chat</div>
+            </div>
+            <div class="arrow">→</div>
+        </a>
+
+        <!-- Telegram Channel -->
+        <a class="contact-card" href="https://t.me/farvpnapp" target="_blank" rel="noopener noreferrer"
+            id="channelCard">
+            <div class="contact-icon channel">📢</div>
+            <div class="contact-info">
+                <div class="label">Telegram (Channel)</div>
+                <div class="value">@farvpnapp</div>
+                <div class="hint">Click to subscribe</div>
+            </div>
+            <div class="arrow">→</div>
+        </a>
+
+        <!-- Website -->
+        <div class="contact-card" id="websiteCard">
+            <div class="contact-icon website">🌐</div>
+            <div class="contact-info">
+                <div class="label">Website</div>
+                <div class="value">farnet.top</div>
+                <div class="hint">Click to visit</div>
+            </div>
+            <div class="arrow">→</div>
+        </div>
+
+        <!-- Email -->
+        <div class="contact-card" id="emailCard">
+            <div class="contact-icon email">✉</div>
+            <div class="contact-info">
+                <div class="label">Email</div>
+                <div class="value">3tigerpro@gmail.com</div>
+                <div class="hint">Click to send email</div>
+            </div>
+            <div class="arrow">→</div>
+        </div>
+
+        <div class="divider"></div>
+    </div>
+
+    <!-- Toast -->
+    <div class="copy-toast" id="toast">Copied to clipboard</div>
+
+    <script>
+        (function () {
+            var toast = document.getElementById('toast');
+            var timer = null;
+
+            function showToast(text) {
+                toast.textContent = text;
+                toast.classList.add('show');
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                    toast.classList.remove('show');
+                }, 2000);
+            }
+
+            function copyText(text, msg) {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(function () {
+                        showToast(msg);
+                    }).catch(function () {
+                        fallbackCopy(text, msg);
+                    });
+                } else {
+                    fallbackCopy(text, msg);
+                }
+            }
+
+            function fallbackCopy(text, msg) {
+                var textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast(msg);
+                } catch (e) {
+                    // fallback
+                }
+                document.body.removeChild(textarea);
+            }
+
+            function getCopyInfo(cardId) {
+                switch (cardId) {
+                    case 'emailCard': return { text: '3tigerpro@gmail.com', msg: 'Email copied' };
+                    case 'telegramCard': return { text: 'qifendev', msg: 'Telegram username copied' };
+                    case 'channelCard': return { text: 'farvpnapp', msg: 'Channel name copied' };
+                    case 'websiteCard': return { text: 'farnet.top', msg: 'Website URL copied' };
+                    default: return null;
+                }
+            }
+
+            var cards = document.querySelectorAll('.contact-card');
+            var actions = {
+                websiteCard: function () { window.open('https://farnet.top', '_blank'); },
+                emailCard: function () { window.location.href = 'mailto:3tigerpro@gmail.com'; },
+                telegramCard: function () { window.open('https://t.me/qifendev', '_blank'); },
+                channelCard: function () { window.open('https://t.me/farvpnapp', '_blank'); }
+            };
+
+            cards.forEach(function (card) {
+                // Click to perform action
+                card.addEventListener('click', function (e) {
+                    var action = actions[card.id];
+                    if (action) action();
+                });
+
+                // Right-click to copy
+                card.addEventListener('contextmenu', function (e) {
+                    e.preventDefault();
+                    var info = getCopyInfo(card.id);
+                    if (info) copyText(info.text, info.msg);
+                });
+
+                // Long press on mobile to copy
+                var longPressTimer = null;
+                card.addEventListener('touchstart', function () {
+                    longPressTimer = setTimeout(function () {
+                        var info = getCopyInfo(card.id);
+                        if (info) copyText(info.text, info.msg);
+                    }, 600);
+                });
+                card.addEventListener('touchend', function () {
+                    clearTimeout(longPressTimer);
+                });
+                card.addEventListener('touchmove', function () {
+                    clearTimeout(longPressTimer);
+                });
+            });
+        })();
+    </script>
+
+</body>
+
+</html>
