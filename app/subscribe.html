@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FarVPN 订阅使用指南</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 20px 32px;
+        }
+
+        .header .logo-img {
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #ffc0d5;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            margin-top: 6px;
+        }
+
+        /* Section Card */
+        .section-card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 28px 24px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 192, 213, 0.10);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffc0d5;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title .icon {
+            font-size: 24px;
+        }
+
+        .section-desc {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        /* Subscribe URL Box */
+        .sub-box {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid rgba(255, 192, 213, 0.12);
+            margin-bottom: 12px;
+        }
+
+        .sub-box .url-text {
+            flex: 1;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.85);
+            word-break: break-all;
+            font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+            line-height: 1.6;
+            user-select: all;
+        }
+
+        .sub-box .copy-btn {
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #ffc0d5, #ff6b9d);
+            border: none;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .sub-box .copy-btn:active {
+            opacity: 0.7;
+        }
+
+        /* Step */
+        .step-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 14px;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffc0d5, #ff6b9d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            margin-top: 2px;
+        }
+
+        .step-content {
+            flex: 1;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.7;
+        }
+
+        .step-content strong {
+            color: #ffc0d5;
+        }
+
+        /* Client Cards */
+        .client-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .client-card {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 18px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.3s;
+        }
+
+        .client-card:hover {
+            background: rgba(255, 255, 255, 0.09);
+            border-color: rgba(255, 192, 213, 0.15);
+        }
+
+        .client-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 10px;
+        }
+
+        .client-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .client-icon.clash {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            box-shadow: 0 4px 16px rgba(245, 87, 108, 0.3);
+        }
+        .client-icon.singbox {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            box-shadow: 0 4px 16px rgba(79, 172, 254, 0.3);
+        }
+        .client-icon.shadowrocket {
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+            box-shadow: 0 4px 16px rgba(67, 233, 123, 0.3);
+        }
+        .client-icon.stash {
+            background: linear-gradient(135deg, #fa709a, #fee140);
+            box-shadow: 0 4px 16px rgba(250, 112, 154, 0.3);
+        }
+        .client-icon.v2rayng {
+            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+            box-shadow: 0 4px 16px rgba(161, 140, 209, 0.3);
+        }
+        .client-icon.nekobox {
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            box-shadow: 0 4px 16px rgba(252, 182, 159, 0.3);
+        }
+        .client-icon.quantumult {
+            background: linear-gradient(135deg, #89f7fe, #66a6ff);
+            box-shadow: 0 4px 16px rgba(102, 166, 255, 0.3);
+        }
+        .client-icon.surge {
+            background: linear-gradient(135deg, #fddb92, #d1fdff);
+            box-shadow: 0 4px 16px rgba(253, 219, 146, 0.3);
+        }
+        .client-icon.clashx {
+            background: linear-gradient(135deg, #f093fb, #4facfe);
+            box-shadow: 0 4px 16px rgba(79, 172, 254, 0.3);
+        }
+        .client-icon.cfw {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+        }
+        .client-icon.flash {
+            background: linear-gradient(135deg, #f093fb, #4facfe);
+            box-shadow: 0 4px 16px rgba(79, 172, 254, 0.3);
+        }
+
+        .client-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .client-badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            margin-left: auto;
+        }
+
+        .client-desc {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .client-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .client-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            padding: 5px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+            transition: background 0.2s;
+        }
+
+        .client-links a:hover {
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .client-links a.download {
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+            color: #0f0c29;
+            font-weight: 600;
+        }
+
+        .client-links a.download:hover {
+            opacity: 0.85;
+        }
+
+        .client-links a.github-link {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .client-steps {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .client-steps .step-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.45);
+            margin-bottom: 6px;
+        }
+
+        .client-steps p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+
+        .client-steps code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #ffc0d5;
+            font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+            word-break: break-all;
+        }
+
+        /* Tips */
+        .tip-box {
+            background: rgba(255, 192, 213, 0.08);
+            border-left: 3px solid #ffc0d5;
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-top: 16px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+
+        .tip-box strong {
+            color: #ffc0d5;
+        }
+
+        /* Back link */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 20px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: #ffc0d5;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: 999;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            body {
+                padding: 12px;
+            }
+
+            .header {
+                padding: 28px 12px 24px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .section-card {
+                padding: 20px 16px;
+            }
+
+            .sub-box {
+                flex-direction: column;
+                padding: 14px;
+            }
+
+            .sub-box .url-text {
+                font-size: 12px;
+                width: 100%;
+            }
+
+            .sub-box .copy-btn {
+                width: 100%;
+                text-align: center;
+                padding: 10px;
+            }
+
+            .client-card {
+                padding: 14px 16px;
+            }
+
+            .client-header {
+                gap: 10px;
+            }
+
+            .client-icon {
+                width: 38px;
+                height: 38px;
+                font-size: 16px;
+            }
+
+            .client-name {
+                font-size: 14px;
+            }
+
+            .step-item {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Back Link -->
+        <a href="../index.html" class="back-link">← Back to Home</a>
+
+        <!-- Header -->
+        <div class="header">
+            <img src="../images/logo.png" alt="FarVPN" class="logo-img">
+            <h1>FarVPN 订阅使用指南</h1>
+            <p>快速上手 · 多平台支持 · 开源客户端推荐</p>
+        </div>
+
+        <!-- What is Subscription -->
+        <div class="section-card">
+            <div class="section-title">
+                <span class="icon">📖</span> 什么是订阅链接？
+            </div>
+            <div class="section-desc">
+                订阅链接是 FarVPN 为您生成的专属配置地址，包含了您的节点信息和加密参数。您只需将订阅链接导入到支持的客户端中，即可自动获取所有可用节点，无需手动配置每一个服务器。
+            </div>
+            <div class="section-desc" style="margin-bottom:0;">
+                <strong>使用流程：</strong> 在 FarVPN 中复制订阅链接 → 打开客户端 → 导入订阅 → 选择节点 → 一键连接。
+            </div>
+        </div>
+
+        <!-- How to Get -->
+        <div class="section-card">
+            <div class="section-title">
+                <span class="icon">🔑</span> 获取订阅链接
+            </div>
+            <div class="section-desc">
+                请按照以下步骤获取您的专属订阅链接：
+            </div>
+            <ul class="step-list">
+                <li class="step-item">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                        <strong>打开 FarVPN App</strong>，登录您的账号
+                    </div>
+                </li>
+                <li class="step-item">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                        进入 <strong>「我的」</strong> → <strong>「订阅」</strong> 页面
+                    </div>
+                </li>
+                <li class="step-item">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                        点击 <strong>「复制订阅链接」</strong>，链接将自动复制到剪贴板
+                    </div>
+                </li>
+                <li class="step-item">
+                    <div class="step-num">4</div>
+                    <div class="step-content">
+                        将链接粘贴到下方输入框或直接导入到您使用的客户端中
+                    </div>
+                </li>
+            </ul>
+
+            <div class="tip-box">
+                💡 <strong>提示：</strong> 如果您无法在 App 内找到订阅链接，请联系客服获取帮助。<br>
+                订阅链接请妥善保管，<strong>不要分享给他人</strong>。
+            </div>
+        </div>
+
+        <!-- Import Methods -->
+        <div class="section-card">
+            <div class="section-title">
+                <span class="icon">📥</span> 通用导入方法
+            </div>
+            <div class="section-desc">
+                大部分客户端都支持以下通用导入方式，您可以选择其中一种：
+            </div>
+            <ul class="step-list">
+                <li class="step-item">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                        <strong>一键导入（推荐）：</strong> 在浏览器中打开订阅链接，系统会自动跳转到已安装的客户端并完成导入。
+                    </div>
+                </li>
+                <li class="step-item">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                        <strong>复制链接导入：</strong> 复制订阅链接 → 打开客户端 → 找到「导入订阅」或「添加配置」→ 粘贴链接
+                    </div>
+                </li>
+                <li class="step-item">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                        <strong>二维码导入：</strong> 在 FarVPN App 中点击「显示二维码」，使用客户端扫描即可导入
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Apps Section -->
+        <div class="section-card">
+            <div class="section-title">
+                <span class="icon">📱</span> 推荐客户端下载与使用
+            </div>
+            <div class="section-desc">
+                以下为主流开源或免费的 VPN 客户端，支持订阅链接导入，适用于不同平台：
+            </div>
+
+            <div class="client-grid">
+
+                <!-- Clash Verge / Clash Meta -->
+                <div class="client-card">
+                    <div class="client-header">
+                        <div class="client-icon clash">C</div>
+                        <div class="client-name">Clash Verge</div>
+                        <span class="client-badge">Windows · macOS · Linux</span>
+                    </div>
+                    <div class="client-desc">
+                        基于 Clash Meta 内核的现代化图形界面客户端，支持订阅链接、规则分流、代理组等功能，是目前最流行的跨平台客户端之一。
+                    </div>
+                    <div class="client-links">
+                        <a href="https://github.com/clash-verge-rev/clash-verge-rev/releases" target="_blank" class="download">⬇ 下载</a>
+                        <a href="https://github.com/clash-verge-rev/clash-verge-rev" target="_blank" class="github-link">GitHub</a>
+                    </div>
+                    <div class="client-steps">
+                        <div class="step-label">使用步骤</div>
+                        <p>
+                            ① 下载并安装 Clash Verge<br>
+                            ② 打开软件 → 进入「订阅」页面 → 点击「导入」<br>
+                            ③ 粘贴订阅链接 → 点击「导入」<br>
+                            ④ 在「代理」页面选择一个节点 → 点击「开启系统代理」
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Sing-box -->
+                <div class="client-card">
+                    <div class="client-header">
+                        <div class="client-icon singbox">S</div>
+                        <div class="client-name">Sing-box</div>
+                        <span class="client-badge">Windows · macOS · Linux · iOS · Android</span>
+                    </div>
+                    <div class="client-desc">
+                        通用代理平台，以高性能和低资源占用著称。支持多种协议和丰富的路由规则，是高级用户的首选。
+                    </div>
+                    <div class="client-links">
+                        <a href="https://github.com/SagerNet/sing-box/releases" target="_blank" class="download">⬇ 下载</a>
+                        <a href="https://github.com/SagerNet/sing-box" target="_blank" class="github-link">GitHub</a>
+                        <a href="https://sing-box.sagernet.org" target="_blank" class="github-link">文档</a>
+                    </div>
+                    <div class="client-steps">
+                        <div class="step-label">使用步骤（搭配 GUI 客户端）</div>
+                        <p>
+                            ① 下载对应平台的客户端（如 <strong>SFI</strong> / <strong>SFA</strong> / <strong>SFM</strong>）<br>
+                            ② 打开客户端 → 点击「导入配置」→ 选择「从剪贴板导入」<br>
+                            ③ 程序会自动解析节点列表 → 选择节点连接即可
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Shadowrocket -->
+                <div class="client-card">
+                    <div class="client-header">
+                        <div class="client-icon shadowrocket">SR</div>
+                        <div class="client-name">Shadowrocket</div>
+                        <span class="client-badge">iOS · iPadOS</span>
+                    </div>
+                    <div class="client-desc">
+                        iOS 平台上最受欢迎的代理客户端，界面简约、功能强大，完美支持订阅链接导入和规则配置。
+                    </div>
+                    <div class="client-links">
+                        <a href="https://apps.apple.com/app/shadowrocket/id932747118" target="_blank" class="download">⬇ App Store 下载</a>
+                    </div>
+                    <div class="client-steps">
+                        <div class="step-label">使用步骤</div>
+                        <p>
+                            ① 在 App Store 购买并下载 Shadowrocket<br>
+                            ② 打开 App → 点击右上角「+」→ 选择「类型」为「Subscribe」<br>
+                            ③ 在「URL」处粘贴订阅链接 → 点击「完成」<br>
+                            ④ 在主界面选择节点 → 点击顶部的开关按钮连接
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Stash -->
+                <div class="client-card">
+                    <div class="client-header">
+                        <div class="client-icon stash">ST</div>
+                        <div class="client-name">Stash</div>
+                        <span class="client-badge">iOS · iPadOS</span>
+                    </div>
+                    <div class="client-desc">
+                        iOS 上基于 Clash 内核的代理客户端，支持 Clash 规则集、策略组和订阅链接，功能全面，性能优异。
+                    </div>
+                    <div class="client-links">
+                        <a href="https://apps.apple.com/app/stash/id1596063349" target="_blank" class="download">⬇ App Store 下载</a>
+                        <a href="https://stash.wiki" target="_blank" class="github-link">文档</a>
+                    </div>
+                    <div class="client-steps">
+                        <div class="step-label">使用步骤</div>
+                        <p>
+                            ① 在 App Store 购买并下载 Stash<br>
+                            ② 打开 App → 点击「+」→ 选择「订阅」<br>
+                            ③ 粘贴订阅链接 → 点击「添加」<br>
+                            ④ 返回主界面 → 选择一个策略组和节点 → 点击「连接」
+                        </p>
+                    </div>
+                </div>
+
+                <!-- v2rayNG -->
+                <div class="client-card">
+                    <div class="client-header">
+                        <div class="client-icon v2rayng">V</div>
+                        <div class="client-name">v2rayNG</div>
+                        <span class="client-badge">Android</span>
+                    </div>
+                    <div class="client-desc">
+                        Android 平台上广受欢迎的代理客户端，支持 VMess、VLESS、Trojan、Shadowsocks 等多种协议和订阅链接导入。
+                    </div>
+                    <div class="client-links">
+                        <a href="https://github.com/2dust/v2rayNG/releases" target="_blank" class="download">⬇ 下载</a>
+                        <a href="https://github.com/2dust/v2rayNG" target="_blank" class="github-link">GitHub</a>
+                    </div>
+                    <div class="client-steps">
+                        <div class="step-label">使用步骤</div>
+                        <p>
+                            ① 下载并安装 v2rayNG<br>
+                            ② 打开 App → 点击右上角「⋮」→ 选择「导入配置」→ 「从剪贴板导入」<br>
+                            ③ 导入成功后 → 点击服务器列表中的节点<br>
+                            ④ 点击右下角的「V」图标连接
+                        </p>
+                    </div>
+                </div>
+
+                <!-- NekoBox -->
+                <div class="client-card">
+                    <div class="client-header">
+                        <div class="client-icon nekobox">N</div>
+                        <div class="client-name">NekoBox</div>
+                        <span class="client-badge">Windows · macOS · Linux · Android</span>
+                    </div>
+                    <div class="client-desc">
+                        跨平台代理客户端，支持多种代理协议和订阅链接导入，界面现代简洁，功能丰富。
+                    </div>
+                    <div class="client-links">
+                        <a href="https://github.com/MatsuriDayo/NekoBox/releases" target="_blank" class="download">⬇ 下载</a>
+                        <a href="https://github.com/MatsuriDayo/NekoBox" target="_blank" class="github-link">GitHub</a>
+                    </div>
+                    <div class="client-steps">
+                        <div class="step-label">使用步骤</div>
+                        <p>
+                            ① 下载并安装 NekoBox<br>
+                            ② 打开 App → 点击「导入」→ 选择「从剪贴板导入」<br>
+                            ③ 添加成功后 → 选择服务器节点<br>
+                            ④ 点击右下角按钮启动连接
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Quantumult X -->
+                <div class="client-card">
+                    <div class="client-header">
+                        <div class="client-icon quantumult">QX</div>
+                        <div class="client-name">Quantumult X</div>
+                        <span class="client-badge">iOS · iPadOS</span>
+                    </div>
+                    <div class="client-desc">
+                        iOS 上的高级代理客户端，支持丰富的自定义规则、脚本和订阅链接导入，是进阶用户的上佳之选。
+                    </div>
+                    <div class="client-links">
+                        <a href="https://apps.apple.com/app/quantumult-x/id1443988620" target="_blank" class="download">⬇ App Store 下载</a>
+                        <a href="https://github.com/CrossUtility/QuantumultX" target="_blank" class="github-link">资源</a>
+                    </div>
+                    <div class="client-steps">
+                        <div class="step-label">使用步骤</div>
+                        <p>
+                            ① 在 App Store 购买并下载 Quantumult X<br>
+                            ② 打开 App → 点击底部「节点」→ 点击右上角「···」<br>
+                            ③ 选择「订阅」→ 点击右上角「+」→ 粘贴订阅链接<br>
+                            ④ 返回节点页面 → 选择节点 → 点击右下角开关连接
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Surge -->
+                <div class="client-card">
+                    <div class="client-header">
+                        <div class="client-icon surge">SG</div>
+                        <div class="client-name">Surge</div>
+                        <span class="client-badge">iOS · macOS</span>
+                    </div>
+                    <div class="client-desc">
+                        专业级别的网络调试和代理工具，功能极其强大，支持代理、策略组、脚本、抓包等高级功能。
+                    </div>
+                    <div class="client-links">
+                        <a href="https://nssurge.com" target="_blank" class="download">⬇ 官网下载</a>
+                        <a href="https://community.nssurge.com" target="_blank" class="github-link">社区</a>
+                    </div>
+                    <div class="client-steps">
+                        <div class="step-label">使用步骤</div>
+                        <p>
+                            ① 在官网购买并下载 Surge<br>
+                            ② 打开 Surge → 进入「策略」→ 点击左下角「+」→ 选择「订阅」<br>
+                            ③ 粘贴订阅链接 → 点击「确定」<br>
+                            ④ 选择策略模式 → 点击「开启 Surge」连接
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Clash for Windows -->
+                <div class="client-card">
+                    <div class="client-header">
+                        <div class="client-icon cfw">CFW</div>
+                        <div class="client-name">Clash for Windows</div>
+                        <span class="client-badge">Windows</span>
+                    </div>
+                    <div class="client-desc">
+                        Windows 平台上经典的 Clash 图形界面客户端，支持订阅管理、代理切换、规则编辑等功能，是很多用户的入门首选。
+                    </div>
+                    <div class="client-links">
+                        <a href="https://github.com/Fndroid/clash_for_windows_pkg/releases" target="_blank" class="download">⬇ 下载</a>
+                        <a href="https://github.com/Fndroid/clash_for_windows_pkg" target="_blank" class="github-link">GitHub</a>
+                    </div>
+                    <div class="client-steps">
+                        <div class="step-label">使用步骤</div>
+                        <p>
+                            ① 下载并安装 Clash for Windows<br>
+                            ② 打开软件 → 进入「Profiles」页面 → 粘贴订阅链接到输入框 → 点击「Download」<br>
+                            ③ 切换到「Proxies」页面 → 选择一个节点<br>
+                            ④ 开启「System Proxy」开关
+                        </p>
+                    </div>
+                </div>
+
+                <!-- ClashX -->
+                <div class="client-card">
+                    <div class="client-header">
+                        <div class="client-icon clashx">CX</div>
+                        <div class="client-name">ClashX</div>
+                        <span class="client-badge">macOS</span>
+                    </div>
+                    <div class="client-desc">
+                        macOS 上轻量易用的 Clash 客户端，支持订阅链接、代理切换和系统代理，操作简单，兼容性好。
+                    </div>
+                    <div class="client-links">
+                        <a href="https://github.com/yichengchen/clashX/releases" target="_blank" class="download">⬇ 下载</a>
+                        <a href="https://github.com/yichengchen/clashX" target="_blank" class="github-link">GitHub</a>
+                    </div>
+                    <div class="client-steps">
+                        <div class="step-label">使用步骤</div>
+                        <p>
+                            ① 下载并安装 ClashX<br>
+                            ② 点击菜单栏 ClashX 图标 → 选择「配置」→「托管配置」→「管理」<br>
+                            ③ 点击「添加」→ 粘贴订阅链接 → 点击「确定」<br>
+                            ④ 选择刚添加的配置 → 在菜单栏点击「设置为系统代理」
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Flado / Flash VPN Client -->
+                <div class="client-card">
+                    <div class="client-header">
+                        <div class="client-icon flash">FL</div>
+                        <div class="client-name">Flado / Flash VPN</div>
+                        <span class="client-badge">多平台</span>
+                    </div>
+                    <div class="client-desc">
+                        新一代开源代理客户端，界面美观，支持多平台运行，兼容主流订阅格式，快速上手。
+                    </div>
+                    <div class="client-links">
+                        <a href="https://github.com/flashvpn" target="_blank" class="github-link">GitHub 组织</a>
+                    </div>
+                    <div class="client-steps">
+                        <div class="step-label">使用步骤</div>
+                        <p>
+                            ① 下载对应平台的客户端<br>
+                            ② 打开 App → 进入订阅管理页面<br>
+                            ③ 点击「添加订阅」→ 粘贴 FarVPN 订阅链接<br>
+                            ④ 选择节点 → 连接
+                        </p>
+                    </div>
+                </div>
+
+            </div> <!-- end client-grid -->
+        </div>
+
+        <!-- FAQ / Tips -->
+        <div class="section-card">
+            <div class="section-title">
+                <span class="icon">❓</span> 常见问题
+            </div>
+
+            <div class="tip-box" style="margin-top:0;">
+                <strong>Q：订阅链接失效了怎么办？</strong><br>
+                在 FarVPN App 中重新复制订阅链接，然后在客户端中更新订阅即可。
+            </div>
+
+            <div class="tip-box">
+                <strong>Q：连接不上节点？</strong><br>
+                请尝试切换其他节点，或检查您的网络环境。如果所有节点都无法连接，请联系客服。
+            </div>
+
+            <div class="tip-box">
+                <strong>Q：客户端显示「解析错误」？</strong><br>
+                请确认您复制的订阅链接完整无误。部分客户端可能需要选择正确的订阅类型。
+            </div>
+
+            <div class="tip-box">
+                <strong>Q：速度慢怎么办？</strong><br>
+                尝试切换到负载较低的节点，或使用「自动选择」模式让客户端为您选择最优节点。
+            </div>
+
+            <div class="tip-box">
+                <strong>Q：可以多设备同时使用吗？</strong><br>
+                是的，一个订阅可以在多台设备上使用，但同时在线设备数量取决于您的套餐规定。
+            </div>
+        </div>
+
+        <!-- Need Help -->
+        <div class="section-card" style="text-align:center;">
+            <div class="section-title" style="justify-content:center;">
+                <span class="icon">💬</span> 需要帮助？
+            </div>
+            <div class="section-desc">
+                如果您在配置过程中遇到任何问题，请随时联系我们的客服团队
+            </div>
+            <div style="margin-top: 12px;">
+                <a href="customer_service.html" style="display:inline-block;background:linear-gradient(135deg,#ffc0d5,#ff6b9d);color:#fff;padding:12px 28px;border-radius:12px;text-decoration:none;font-weight:600;">联系客服</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">已复制</div>
+
+    <script>
+        (function () {
+            var toast = document.getElementById('toast');
+            var timer = null;
+
+            function showToast(msg) {
+                toast.textContent = msg || '已复制';
+                toast.classList.add('show');
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                    toast.classList.remove('show');
+                }, 2000);
+            }
+
+            function copyText(text, msg) {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(function () {
+                        showToast(msg);
+                    }).catch(function () {
+                        fallbackCopy(text, msg);
+                    });
+                } else {
+                    fallbackCopy(text, msg);
+                }
+            }
+
+            function fallbackCopy(text, msg) {
+                var textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast(msg);
+                } catch (e) {}
+                document.body.removeChild(textarea);
+            }
+
+            // Copy buttons
+            var copyBtns = document.querySelectorAll('.copy-btn');
+            copyBtns.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var urlText = btn.parentElement.querySelector('.url-text');
+                    if (urlText) {
+                        copyText(urlText.textContent.trim(), '订阅链接已复制');
+                    }
+                });
+            });
+        })();
+    </script>
+
+</body>
+
+</html>
